@@ -25,7 +25,7 @@ route.get('/search', auth, async (req, res) => {
   const { q } = req.query;
   if (!q) {
     const talker = await getAllSpeakers();
-    return res.status(200).send(talker);
+    return res.status(200).json(talker);
   }
   const search = await searchSpeaker(q);
   return res.status(200).json(search);

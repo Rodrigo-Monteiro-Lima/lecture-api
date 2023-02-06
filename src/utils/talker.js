@@ -71,10 +71,16 @@ const deleteSpeaker = async (id) => {
   await writeFile(newSpeakers);
 };
 
+const searchSpeaker = async (name) => {
+  const speakers = await readFile();
+  return speakers.filter((speaker) => speaker.name.toLowerCase().includes(name.toLowerCase()));
+};
+
 module.exports = {
   getAllSpeakers,
   getSpeakerById,
   insertSpeaker,
   updateSpeaker,
   deleteSpeaker,
+  searchSpeaker,
 };

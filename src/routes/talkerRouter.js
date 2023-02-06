@@ -11,6 +11,7 @@ const {
   insertSpeaker,
   updateSpeaker,
   deleteSpeaker,
+  searchSpeaker,
  } = require('../utils/talker');
 
 const route = express.Router();
@@ -18,6 +19,16 @@ const route = express.Router();
 route.get('/', async (_req, res) => {
   const talker = await getAllSpeakers();
   return res.status(200).json(talker);
+});
+
+route.get('/search', auth, async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    const talker = await getAllSpeakers();
+    return res.status(200).send(talker);
+  }
+  const search = await searchSpeaker(q);
+  return res.status(200).json(search);
 });
 
 route.get('/:id', async (req, res, next) => {

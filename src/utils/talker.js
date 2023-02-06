@@ -32,8 +32,21 @@ const getSpeakerById = async (id) => {
   return speakers.find((speaker) => speaker.id === id);
 };
 
+const insertSpeaker = async (info) => {
+  const speakers = await readFile();
+  const id = speakers[speakers.length - 1].id + 1;
+  const newSpeaker = {
+    id,
+    ...info,
+  };
+  speakers.push(newSpeaker);
+  await writeFile(speakers);
+  return newSpeaker;
+};
+
 module.exports = {
   writeFile,
   getAllSpeakers,
   getSpeakerById,
+  insertSpeaker,
 };

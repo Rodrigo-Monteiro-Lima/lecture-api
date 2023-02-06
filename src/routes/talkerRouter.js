@@ -1,5 +1,11 @@
 const express = require('express');
-const { getAllSpeakers, getSpeakerById } = require('../utils/talker');
+const auth = require('../middlewares/auth');
+const validateAge = require('../middlewares/validateAge');
+const validateName = require('../middlewares/validateName');
+const validateRate = require('../middlewares/validateRate');
+const validateTalk = require('../middlewares/validateTalk');
+const validateWatchedAt = require('../middlewares/validateWatchedAt');
+const { getAllSpeakers, getSpeakerById, insertSpeaker } = require('../utils/talker');
 
 const route = express.Router();
 
@@ -15,6 +21,19 @@ route.get('/:id', async (req, res, next) => {
     return next({ message: 'Pessoa palestrante não encontrada', status: 404 });
 }
   return res.status(200).json(speaker);
+});
+
+route.post('/',
+auth,
+validateName,
+validateAge,
+validateTalk,
+validateRate,
+validateWatchedAt,
+async (req, res) => {
+  const { body } = req;
+  const newSpeaker = await insertSpeaker(body);
+  return res.status(201).json(newSpeaker);
 });
 
 module.exports = route;

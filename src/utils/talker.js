@@ -27,7 +27,13 @@ const getAllSpeakers = async () => {
   return speakers;
 };
 
+const getSpeakerById = async (id) => {
+  const speakers = await readFile();
+  return speakers.find((speaker) => speaker.id === id);
+};
+
 module.exports = {
   writeFile,
   getAllSpeakers,
+  getSpeakerById,
 };

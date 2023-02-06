@@ -1,4 +1,5 @@
 const express = require('express');
+const errorHandle = require('./middlewares/errorHandler');
 const talkerRoute = require('./routes/talkerRoutes');
 
 const app = express();
@@ -12,6 +13,8 @@ app.use('/talker', talkerRoute);
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+app.use(errorHandle);
 
 app.listen(PORT, () => {
   console.log('Online');

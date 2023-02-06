@@ -44,9 +44,26 @@ const insertSpeaker = async (info) => {
   return newSpeaker;
 };
 
+const updateSpeaker = async (id, info) => {
+  const speakers = await readFile();
+  const speakerIndex = speakers.findIndex((speaker) => speaker.id === id);
+  if (speakerIndex === -1) {
+    return -1;
+  }
+  const newSpeaker = { id, ...info };
+  const newSpeakers = speakers.map((speaker, index) => {
+    if (index === speakerIndex) {
+      return newSpeaker;
+    } 
+      return speaker;
+  });
+  await writeFile(newSpeakers);
+  return newSpeaker;
+};
+
 module.exports = {
-  writeFile,
   getAllSpeakers,
   getSpeakerById,
   insertSpeaker,
+  updateSpeaker,
 };

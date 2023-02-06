@@ -5,7 +5,7 @@ const validateName = require('../middlewares/validateName');
 const validateRate = require('../middlewares/validateRate');
 const validateTalk = require('../middlewares/validateTalk');
 const validateWatchedAt = require('../middlewares/validateWatchedAt');
-const { getAllSpeakers, getSpeakerById, insertSpeaker } = require('../utils/talker');
+const { getAllSpeakers, getSpeakerById, insertSpeaker, updateSpeaker } = require('../utils/talker');
 
 const route = express.Router();
 
@@ -34,6 +34,23 @@ async (req, res) => {
   const { body } = req;
   const newSpeaker = await insertSpeaker(body);
   return res.status(201).json(newSpeaker);
+});
+
+route.put('/:id',
+auth,
+validateName,
+validateAge,
+validateTalk,
+validateRate,
+validateWatchedAt,
+async (req, res, next) => {
+  const id = Number(req.params.id);
+  const { body } = req;
+  const newSpeaker = await updateSpeaker(id, body);
+  if (newSpeaker === -1) {
+    return next({ message: 'Pessoa palestrante não encontrada', status: 404 });
+  }
+  return res.status(200).json(newSpeaker);
 });
 
 module.exports = route;

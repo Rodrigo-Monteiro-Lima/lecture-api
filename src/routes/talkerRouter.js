@@ -5,7 +5,13 @@ const validateName = require('../middlewares/validateName');
 const validateRate = require('../middlewares/validateRate');
 const validateTalk = require('../middlewares/validateTalk');
 const validateWatchedAt = require('../middlewares/validateWatchedAt');
-const { getAllSpeakers, getSpeakerById, insertSpeaker, updateSpeaker } = require('../utils/talker');
+const { 
+  getAllSpeakers,
+  getSpeakerById,
+  insertSpeaker,
+  updateSpeaker,
+  deleteSpeaker,
+ } = require('../utils/talker');
 
 const route = express.Router();
 
@@ -51,6 +57,15 @@ async (req, res, next) => {
     return next({ message: 'Pessoa palestrante não encontrada', status: 404 });
   }
   return res.status(200).json(newSpeaker);
+});
+
+route.delete('/:id', auth, async (req, res, next) => {
+  const id = Number(req.params.id);
+  const newSpeakers = await deleteSpeaker(id);
+  if (newSpeakers === -1) {
+    return next({ message: 'Pessoa palestrante não encontrada', status: 404 });
+  }
+  return res.sendStatus(204);
 });
 
 module.exports = route;

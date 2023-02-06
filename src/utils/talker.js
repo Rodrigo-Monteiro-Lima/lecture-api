@@ -61,9 +61,20 @@ const updateSpeaker = async (id, info) => {
   return newSpeaker;
 };
 
+const deleteSpeaker = async (id) => {
+  const speakers = await readFile();
+  const speakerIndex = speakers.findIndex((speaker) => speaker.id === id);
+  if (speakerIndex === -1) {
+    return -1;
+  }
+  const newSpeakers = speakers.filter((speaker) => speaker.id !== id);
+  await writeFile(newSpeakers);
+};
+
 module.exports = {
   getAllSpeakers,
   getSpeakerById,
   insertSpeaker,
   updateSpeaker,
+  deleteSpeaker,
 };

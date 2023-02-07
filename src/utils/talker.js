@@ -7,7 +7,7 @@ const readFile = async () => {
     const contentFile = await fs.readFile(join(__dirname, path), 'utf-8');
     return JSON.parse(contentFile);
   } catch (error) {
-    return error.message;
+    throw new Error(error.message);
   }
 };
 
@@ -17,8 +17,7 @@ const writeFile = async (content) => {
     const completePath = join(__dirname, path);
     await fs.writeFile(completePath, JSON.stringify(content));
   } catch (e) {
-    console.error('Erro ao salvar o arquivo', e.message);
-    return null;
+    throw new Error(e.message);
   }
 };
 
